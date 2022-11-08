@@ -1,4 +1,4 @@
-# Group: 
+# Group: Bit Byters Team
 ## Members:
 Luis Meléndez - luis.melendez28@upr.edu
 
