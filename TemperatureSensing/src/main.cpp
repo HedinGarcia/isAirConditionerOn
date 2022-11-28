@@ -5,6 +5,23 @@
 #include <PubSubClient.h>
 #include <driver/adc.h>
 
+#define NOTSET 0
+
+enum publish_mode {
+  PUBLISH_CALIBRATION = 0,
+  PUBLISH_TEMPERATURE = 1,
+  PUBLISH_DEFAULT = 2,
+};
+
+struct calibration_struct {
+  int lowest_volt;
+  int lowest_temp;
+  int highest_volt;
+  int highest_temp;
+  bool lowestValuesSaved;
+  bool highestValuesSaved;
+};
+
 const char* wifi_network_name = "RUMNET";
 const char* wifi_network_password = "Colegio2019";
 const char* mqtt_broker_host = "44.212.35.193";
@@ -14,6 +31,14 @@ const char *subscribe_topic = "Calibration";
 
 WiFiClient esp32Client;
 PubSubClient client(esp32Client);
+
+int current_voltage;
+int count_average;
+int voltage_average;
+int last_voltage_average;
+int voltage_to_publish;
+
+struct calibration_struct calibration_vals;
 
 void initialize_wifi() {
   delay(1000);
@@ -46,13 +71,31 @@ void reconnect_mqtt() {
 
 void commission() {}
 
-int get_aveg_temp() {
-  return 0;
+int get_avg_temp_voltage() {
+  return last_voltage_average;
 }
 
-void calculate_aveg_temp() {}
+void collect_avg_temp_voltage(){
+  if (count_average < 10) {
+    current_voltage = adc1_get_raw(ADC1_CHANNEL_6);
+    Serial.print("\nCurrent voltage value: ");
+    Serial.println(current_voltage);
+    delay(1000);
+    voltage_average = voltage_average + current_voltage;
+    count_average = count_average + 1;
+  }
+  if (count_average == 10) {
+    voltage_average = voltage_average / 10;
+    Serial.print("\nAverage value: ");
+    Serial.println(voltage_average);
+    delay(1000);
+    count_average = 0;
+    last_voltage_average = voltage_average;
+    voltage_average = 0;
+  }
+}
 
-void callibration() {}
+void calibration(int temperature, bool resetValues) {}
 
 void callback(char* topic, byte* payload, unsigned int length) {
   Serial.printf("\nMessage received from topic \"%s\": ", topic);
@@ -61,13 +104,32 @@ void callback(char* topic, byte* payload, unsigned int length) {
   }
 }
 
-void publish(const char *pbParameter){
+void publish(publish_mode mode, const char *pbParameter) {
+  char message [90];
   if (client.connected()) {
-    Serial.printf("\nPublishing: %s", pbParameter);
-    client.publish(publish_topic, pbParameter);
+    switch (mode) {
+    case PUBLISH_CALIBRATION:
+      sprintf(message, "%s%s",pbParameter," mV");
+      break;
+    
+    case PUBLISH_TEMPERATURE:
+      sprintf(message, "%s%s%s","{\"Temperature\": \"",pbParameter,"\"}");
+      break;
+    default:
+      sprintf(message, "%s%s%s","{\"Value\": \"",pbParameter,"\"}");
+      break;
+    }
+    Serial.printf("\nPublishing: %s", message);
+    client.publish(publish_topic, message);
     // Publish every three seconds
     delay(3000);
   }
+}
+
+void publish(publish_mode mode, int pbParameter) {
+  char message[sizeof(int)*8];
+  sprintf(message, "%d", pbParameter);
+  publish(mode, message);
 }
 
 void setup() {
@@ -77,6 +139,16 @@ void setup() {
   // Start MQTT broker connection
   initialize_mqtt();
   client.setCallback(callback);
+  // Initialize variables used for collecting voltage from thermistor 
+  adc1_config_width(ADC_WIDTH_BIT_12);
+  adc1_config_channel_atten(ADC1_CHANNEL_6, ADC_ATTEN_11db);
+  current_voltage = 0;
+  count_average = 0;
+  voltage_average = 0;
+  last_voltage_average = NOTSET;
+  
+  calibration_vals.lowestValuesSaved = false;
+  calibration_vals.highestValuesSaved = false;
   delay(2000);
 }
 
@@ -87,5 +159,11 @@ void loop() {
   }
   // Maintain connection with the server and process incoming messages
   client.loop();
-  publish("100");
+  // Read from thermistor
+  collect_avg_temp_voltage();
+  // Publish measurements
+  voltage_to_publish = get_avg_temp_voltage();
+  if(voltage_to_publish != NOTSET){
+    publish(PUBLISH_CALIBRATION, voltage_to_publish);
+  }
 }
