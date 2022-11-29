@@ -32,9 +32,6 @@ const char *subscribe_topic = "Calibration";
 WiFiClient esp32Client;
 PubSubClient client(esp32Client);
 
-int current_voltage;
-int count_average;
-int voltage_average;
 int last_voltage_average;
 int voltage_to_publish;
 
@@ -75,23 +72,29 @@ int get_avg_temp_voltage() {
   return last_voltage_average;
 }
 
-void collect_avg_temp_voltage(){
-  if (count_average < 10) {
-    current_voltage = adc1_get_raw(ADC1_CHANNEL_6);
-    Serial.print("\nCurrent voltage value: ");
-    Serial.println(current_voltage);
-    delay(1000);
-    voltage_average = voltage_average + current_voltage;
-    count_average = count_average + 1;
-  }
-  if (count_average == 10) {
-    voltage_average = voltage_average / 10;
-    Serial.print("\nAverage value: ");
-    Serial.println(voltage_average);
-    delay(1000);
-    count_average = 0;
-    last_voltage_average = voltage_average;
-    voltage_average = 0;
+void collect_avg_temp_voltage(void *param) {
+  int current_voltage = 0;
+  int count_average = 0;
+  int voltage_average = 0;
+  vTaskDelay(6000 / portTICK_PERIOD_MS); // Allow a wifi & mqtt connection time 
+  Serial.print("\nStarting measurements of temperature voltage: ");
+  while(1) {
+    if (count_average < 10) {
+      current_voltage = adc1_get_raw(ADC1_CHANNEL_6);
+      Serial.print("\nCurrent voltage value: ");
+      Serial.println(current_voltage);
+      voltage_average = voltage_average + current_voltage;
+      count_average = count_average + 1;
+    }
+    if (count_average == 10) {
+      voltage_average = voltage_average / 10;
+      Serial.print("\nAverage value: ");
+      Serial.println(voltage_average);
+      count_average = 0;
+      last_voltage_average = voltage_average;
+      voltage_average = 0;
+    }
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
   }
 }
 
@@ -139,14 +142,12 @@ void setup() {
   // Start MQTT broker connection
   initialize_mqtt();
   client.setCallback(callback);
-  // Initialize variables used for collecting voltage from thermistor 
+  // Configuration to get values from an ESP32 pin
   adc1_config_width(ADC_WIDTH_BIT_12);
   adc1_config_channel_atten(ADC1_CHANNEL_6, ADC_ATTEN_11db);
-  current_voltage = 0;
-  count_average = 0;
-  voltage_average = 0;
   last_voltage_average = NOTSET;
-  
+  // Create task to collect voltage from thermistor
+  xTaskCreate(&collect_avg_temp_voltage, "Collect voltage", 2048, NULL, 5, NULL);
   calibration_vals.lowestValuesSaved = false;
   calibration_vals.highestValuesSaved = false;
   delay(2000);
@@ -159,8 +160,6 @@ void loop() {
   }
   // Maintain connection with the server and process incoming messages
   client.loop();
-  // Read from thermistor
-  collect_avg_temp_voltage();
   // Publish measurements
   voltage_to_publish = get_avg_temp_voltage();
   if(voltage_to_publish != NOTSET){
