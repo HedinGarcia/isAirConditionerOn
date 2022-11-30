@@ -31,6 +31,7 @@ char commission_topic [60];
 const char *calibration_topic = "Calibration";
 const char *room_assigned;
 bool room_was_assigned = false;
+const char* esp32_macaddress;
 
 WiFiClient esp32Client;
 PubSubClient client(esp32Client);
@@ -59,7 +60,7 @@ void initialize_mqtt() {
 void reconnect_mqtt() {
   while(!client.connected()) {
     Serial.printf("\n(~)Attempting connection to MQTT Broker in %s", mqtt_broker_host);
-    if (client.connect("ESP32_Client")) {
+    if (client.connect(esp32_macaddress)) {
       Serial.printf("\n(~)Client connected to MQTT Broker in %s!",mqtt_broker_host);
       client.subscribe(commission_topic);
       client.subscribe(calibration_topic);
@@ -148,7 +149,7 @@ void setup() {
   initialize_mqtt();
   client.setCallback(callback);
   // Generate a commission topic
-  const char* esp32_macaddress = WiFi.macAddress().c_str();
+  esp32_macaddress = WiFi.macAddress().c_str();
   sprintf(commission_topic, "Commission/%s", esp32_macaddress);
   // Configuration to get values from ESP32
   adc1_config_width(ADC_WIDTH_BIT_12);
