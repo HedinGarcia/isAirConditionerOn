@@ -27,7 +27,10 @@ const char* wifi_network_password = "Colegio2019";
 const char* mqtt_broker_host = "44.212.35.193";
 const int mqtt_broker_port = 1883;
 const char* publish_topic = "TempData";
-const char *subscribe_topic = "Calibration";
+char commission_topic [60];
+const char *calibration_topic = "Calibration";
+const char *room_assigned;
+bool room_was_assigned = false;
 
 WiFiClient esp32Client;
 PubSubClient client(esp32Client);
@@ -58,7 +61,8 @@ void reconnect_mqtt() {
     Serial.printf("\n(~)Attempting connection to MQTT Broker in %s", mqtt_broker_host);
     if (client.connect("ESP32_Client")) {
       Serial.printf("\n(~)Client connected to MQTT Broker in %s!",mqtt_broker_host);
-      client.subscribe(subscribe_topic);
+      client.subscribe(commission_topic);
+      client.subscribe(calibration_topic);
     } else {
       Serial.println("\nClient failed to connect to MQTT broker\nWill try again in five seconds");
       delay(5000);
@@ -105,6 +109,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   for (int i = 0; i < length; i++) {
     Serial.print((char)payload[i]);
   }
+  if(strcmp(topic, commission_topic) == 0){}
 }
 
 void publish(publish_mode mode, const char *pbParameter) {
@@ -142,7 +147,10 @@ void setup() {
   // Start MQTT broker connection
   initialize_mqtt();
   client.setCallback(callback);
-  // Configuration to get values from an ESP32 pin
+  // Generate a commission topic
+  const char* esp32_macaddress = WiFi.macAddress().c_str();
+  sprintf(commission_topic, "Commission/%s", esp32_macaddress);
+  // Configuration to get values from ESP32
   adc1_config_width(ADC_WIDTH_BIT_12);
   adc1_config_channel_atten(ADC1_CHANNEL_6, ADC_ATTEN_11db);
   last_voltage_average = NOTSET;
