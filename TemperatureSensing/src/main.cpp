@@ -8,9 +8,10 @@
 #define NOTSET 0
 
 enum publish_mode {
-  PUBLISH_CALIBRATION = 0,
-  PUBLISH_TEMPERATURE = 1,
-  PUBLISH_DEFAULT = 2,
+  PUBLISH_ROOM_ASSIGNED = 0,
+  PUBLISH_CALIBRATION,
+  PUBLISH_TEMPERATURE,
+  PUBLISH_DEFAULT
 };
 
 struct calibration_struct {
@@ -26,11 +27,12 @@ const char* wifi_network_name = "RUMNET";
 const char* wifi_network_password = "Colegio2019";
 const char* mqtt_broker_host = "44.212.35.193";
 const int mqtt_broker_port = 1883;
-const char* publish_topic = "TempData";
-char commission_topic [60];
-const char *calibration_topic = "Calibration";
+char commission_sub_topic [60];
+char calibration_sub_topic[60];
+char room_assigned_pub_topic[60];
+char voltage_pub_topic[60];
 const char *room_assigned;
-bool room_was_assigned = false;
+bool room_was_assigned;
 const char* esp32_macaddress;
 
 WiFiClient esp32Client;
@@ -62,8 +64,8 @@ void reconnect_mqtt() {
     Serial.printf("\n(~)Attempting connection to MQTT Broker in %s", mqtt_broker_host);
     if (client.connect(esp32_macaddress)) {
       Serial.printf("\n(~)Client connected to MQTT Broker in %s!",mqtt_broker_host);
-      client.subscribe(commission_topic);
-      client.subscribe(calibration_topic);
+      client.subscribe(commission_sub_topic);
+      client.subscribe(calibration_sub_topic);
     } else {
       Serial.println("\nClient failed to connect to MQTT broker\nWill try again in five seconds");
       delay(5000);
@@ -105,18 +107,13 @@ void collect_avg_temp_voltage(void *param) {
 
 void calibration(int temperature, bool resetValues) {}
 
-void callback(char* topic, byte* payload, unsigned int length) {
-  Serial.printf("\nMessage received from topic \"%s\": ", topic);
-  for (int i = 0; i < length; i++) {
-    Serial.print((char)payload[i]);
-  }
-  if(strcmp(topic, commission_topic) == 0){}
-}
-
-void publish(publish_mode mode, const char *pbParameter) {
+void publish(publish_mode mode, const char *publish_topic, const char *pbParameter) {
   char message [90];
   if (client.connected()) {
     switch (mode) {
+    case PUBLISH_ROOM_ASSIGNED:
+      sprintf(message, "%s", pbParameter);
+      break;
     case PUBLISH_CALIBRATION:
       sprintf(message, "%s%s",pbParameter," mV");
       break;
@@ -135,10 +132,27 @@ void publish(publish_mode mode, const char *pbParameter) {
   }
 }
 
-void publish(publish_mode mode, int pbParameter) {
+void publish(publish_mode mode, const char *publish_topic, int pbParameter) {
   char message[sizeof(int)*8];
   sprintf(message, "%d", pbParameter);
-  publish(mode, message);
+  publish(mode, publish_topic, message);
+}
+
+void callback(char* topic, byte* payload, unsigned int length) {
+  Serial.printf("\nMessage received from topic \"%s\": ", topic);
+  char buffer[length+1];
+  for (int i = 0; i < length; i++) {
+    buffer[i] = (char) payload[i];
+    Serial.print((char)payload[i]);
+  }
+  buffer[length] = '\0';
+  if(strcmp(topic, commission_sub_topic) == 0){
+    if(room_was_assigned == false){
+      room_assigned = buffer;
+      room_was_assigned = true;
+      publish(PUBLISH_ROOM_ASSIGNED, room_assigned_pub_topic, room_assigned);
+    }
+  }
 }
 
 void setup() {
@@ -148,12 +162,16 @@ void setup() {
   // Start MQTT broker connection
   initialize_mqtt();
   client.setCallback(callback);
-  // Generate a commission topic
+  // Generate subscribe and publish topics
   esp32_macaddress = WiFi.macAddress().c_str();
-  sprintf(commission_topic, "Commission/%s", esp32_macaddress);
+  sprintf(commission_sub_topic, "Commission/%s", esp32_macaddress);
+  sprintf(room_assigned_pub_topic, "AssignedRoom/%s", esp32_macaddress);
+  sprintf(calibration_sub_topic, "Calibration/%s", esp32_macaddress);
+  sprintf(voltage_pub_topic, "VoltData/%s", esp32_macaddress);
   // Configuration to get values from ESP32
   adc1_config_width(ADC_WIDTH_BIT_12);
   adc1_config_channel_atten(ADC1_CHANNEL_6, ADC_ATTEN_11db);
+  room_was_assigned = false;
   last_voltage_average = NOTSET;
   // Create task to collect voltage from thermistor
   xTaskCreate(&collect_avg_temp_voltage, "Collect voltage", 2048, NULL, 5, NULL);
@@ -172,6 +190,6 @@ void loop() {
   // Publish measurements
   voltage_to_publish = get_avg_temp_voltage();
   if(voltage_to_publish != NOTSET){
-    publish(PUBLISH_CALIBRATION, voltage_to_publish);
+    publish(PUBLISH_CALIBRATION, voltage_pub_topic, voltage_to_publish);
   }
 }
