@@ -9,6 +9,7 @@
 
 enum publish_mode {
   PUBLISH_ROOM_ASSIGNED = 0,
+  PUBLISH_CURRENT_VOLTAGE,
   PUBLISH_CALIBRATION,
   PUBLISH_TEMPERATURE,
   PUBLISH_DEFAULT
@@ -40,15 +41,15 @@ const char* esp32_macaddress;
 WiFiClient esp32Client;
 PubSubClient client(esp32Client);
 
-int last_voltage_average;
-int voltage_to_publish;
+float last_voltage_average;
+float voltage_to_publish;
 
 struct calibration_struct calibration_vals;
 
-int get_avg_temp_voltage();
+float get_avg_temp_voltage();
 void collect_avg_temp_voltage(void *param);
-void calibration(int temperature, bool resetValues);
-void publish(publish_mode mode, const char *publish_topic, int pbParameter);
+void calibration(float temperature, bool resetValues);
+void publish(publish_mode mode, const char *publish_topic, float pbParameter);
 void publish(publish_mode mode, const char *publish_topic, calibration_struct pbParameter);
 void publish(publish_mode mode, const char *publish_topic, const char *pbParameter);
 
@@ -82,19 +83,19 @@ void reconnect_mqtt() {
   }
 }
 
-int get_avg_temp_voltage() {
+float get_avg_temp_voltage() {
   return last_voltage_average;
 }
 
 void collect_avg_temp_voltage(void *param) {
-  int current_voltage = 0;
+  float current_voltage = 0;
   int count_average = 0;
-  int voltage_average = 0;
+  float voltage_average = 0;
   vTaskDelay(6000 / portTICK_PERIOD_MS); // Allow a wifi & mqtt connection time 
   Serial.print("\nStarting measurements of temperature voltage: ");
   while(1) {
     if (count_average < 10) {
-      current_voltage = adc1_get_raw(ADC1_CHANNEL_6);
+      current_voltage = (float) adc1_get_raw(ADC1_CHANNEL_6);
       Serial.print("\nCurrent voltage value: ");
       Serial.println(current_voltage);
       voltage_average = voltage_average + current_voltage;
@@ -112,14 +113,14 @@ void collect_avg_temp_voltage(void *param) {
   }
 }
 
-void calibration(int temperature, bool resetValues) {
+void calibration(float temperature, bool resetValues) {
   if(!room_was_assigned) return;
-  int voltage = get_avg_temp_voltage();
+  float voltage = get_avg_temp_voltage();
   if(resetValues){
-    calibration_vals.lowest_volt = 0;
-    calibration_vals.lowest_temp = 0;
-    calibration_vals.highest_volt = 0;
-    calibration_vals.highest_temp = 0;
+    calibration_vals.lowest_volt = 0.0;
+    calibration_vals.lowest_temp = 0.0;
+    calibration_vals.highest_volt = 0.0;
+    calibration_vals.highest_temp = 0.0;
     calibration_vals.lowestValuesSaved = false;
     calibration_vals.highestValuesSaved = false;
     device_calibrated = false;
@@ -131,8 +132,8 @@ void calibration(int temperature, bool resetValues) {
   }
   else if(calibration_vals.lowestValuesSaved == true && calibration_vals.highestValuesSaved == false) {
     if(calibration_vals.lowest_volt > voltage || calibration_vals.lowest_temp > temperature){
-      int temp_voltage = calibration_vals.lowest_volt;
-      int temp_temperature = calibration_vals.lowest_temp;
+      float temp_voltage = calibration_vals.lowest_volt;
+      float temp_temperature = calibration_vals.lowest_temp;
       calibration_vals.lowest_volt = voltage;
       calibration_vals.lowest_temp = temperature;
       calibration_vals.highest_volt = temp_voltage;
@@ -150,13 +151,13 @@ void calibration(int temperature, bool resetValues) {
 
 void publish(publish_mode mode, const char *publish_topic, calibration_struct pbParameter) {
   char message[sizeof(calibration_struct)*8];
-  sprintf(message, "{\"lowestVolt\": %d, \"lowestTemp\": %d, \"highestVolt\": %d, \"highestTemp\": %d}", calibration_vals.lowest_volt, calibration_vals.lowest_temp, calibration_vals.highest_volt, calibration_vals.highest_temp);
+  sprintf(message, "{\"lowestVolt\": %.2f, \"lowestTemp\": %.2f, \"highestVolt\": %.2f, \"highestTemp\": %.2f}", calibration_vals.lowest_volt, calibration_vals.lowest_temp, calibration_vals.highest_volt, calibration_vals.highest_temp);
   publish(mode, publish_topic, message);
 }
 
-void publish(publish_mode mode, const char *publish_topic, int pbParameter) {
+void publish(publish_mode mode, const char *publish_topic, float pbParameter) {
   char message[sizeof(int)*8];
-  sprintf(message, "%d", pbParameter);
+  sprintf(message, "%.2f", pbParameter);
   publish(mode, publish_topic, message);
 }
 
@@ -166,6 +167,9 @@ void publish(publish_mode mode, const char *publish_topic, const char *pbParamet
     switch (mode) {
     case PUBLISH_ROOM_ASSIGNED:
       sprintf(message, "%s", pbParameter);
+      break;
+    case PUBLISH_CURRENT_VOLTAGE:
+      sprintf(message, "%s%s",pbParameter, "mV");
       break;
     case PUBLISH_CALIBRATION:
       sprintf(message, "%s",pbParameter);
@@ -204,7 +208,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
         calibration(0, true);
     }
     else if(device_calibrated == false){
-      calibration(atoi(buffer),false);
+      calibration((float)atof(buffer),false);
     }
   }
 }
@@ -247,11 +251,6 @@ void setup() {
   calibration_vals.highest_temp = 0;
   calibration_vals.lowestValuesSaved = false;
   calibration_vals.highestValuesSaved = false;
-  //calibration_vals.highest_temp = 80;
-  //calibration_vals.highest_volt = 200;
-  //calibration_vals.lowest_temp = 60;
-  //calibration_vals.lowest_volt = 130;
-  
   delay(2000);
 }
 
@@ -265,7 +264,6 @@ void loop() {
   // Publish measurements
   voltage_to_publish = get_avg_temp_voltage();
   if(voltage_to_publish != NOTSET){
-    publish(PUBLISH_CALIBRATION, voltage_pub_topic, voltage_to_publish);
+    publish(PUBLISH_CURRENT_VOLTAGE, voltage_pub_topic, voltage_to_publish);
   }
-  interpolation(calibration_vals);
 }
