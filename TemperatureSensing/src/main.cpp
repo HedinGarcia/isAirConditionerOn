@@ -15,10 +15,10 @@ enum publish_mode {
 };
 
 struct calibration_struct {
-  int lowest_volt;
-  int lowest_temp;
-  int highest_volt;
-  int highest_temp;
+  float lowest_volt;
+  float lowest_temp;
+  float highest_volt;
+  float highest_temp;
   bool lowestValuesSaved;
   bool highestValuesSaved;
 };
@@ -209,6 +209,16 @@ void callback(char* topic, byte* payload, unsigned int length) {
   }
 }
 
+float interpolation(calibration_struct cal_Values){
+  delay(1000); //Giving enough time for data to be collected 
+  float Interpolated_Temp; 
+  float avg_Voltage = (float) get_avg_temp_voltage();
+  Serial.printf("AVG VOLT: %d", last_voltage_average);
+  Interpolated_Temp = cal_Values.lowest_temp + ((avg_Voltage-cal_Values.lowest_volt)*((cal_Values.highest_temp-cal_Values.lowest_temp)/(cal_Values.highest_volt-cal_Values.lowest_volt))); 
+  Serial.printf("Interpolated Temp: %f", Interpolated_Temp);
+  return Interpolated_Temp;
+}
+
 void setup() {
   Serial.begin(115200);
   // Start Wi-Fi connection
@@ -237,6 +247,11 @@ void setup() {
   calibration_vals.highest_temp = 0;
   calibration_vals.lowestValuesSaved = false;
   calibration_vals.highestValuesSaved = false;
+  //calibration_vals.highest_temp = 80;
+  //calibration_vals.highest_volt = 200;
+  //calibration_vals.lowest_temp = 60;
+  //calibration_vals.lowest_volt = 130;
+  
   delay(2000);
 }
 
@@ -252,4 +267,5 @@ void loop() {
   if(voltage_to_publish != NOTSET){
     publish(PUBLISH_CALIBRATION, voltage_pub_topic, voltage_to_publish);
   }
+  interpolation(calibration_vals);
 }
