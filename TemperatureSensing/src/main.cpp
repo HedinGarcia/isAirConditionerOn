@@ -23,8 +23,8 @@ struct calibration_struct {
   bool highestValuesSaved;
 };
 
-const char* wifi_network_name = "Robotica squad";
-const char* wifi_network_password = "Mayaguez802";
+const char* wifi_network_name = "RUMNET";
+const char* wifi_network_password = "Colegio2019";
 const char* mqtt_broker_host = "44.212.35.193";
 const int mqtt_broker_port = 1883;
 char commission_sub_topic [60];
