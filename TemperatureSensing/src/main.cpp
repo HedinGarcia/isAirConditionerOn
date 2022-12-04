@@ -11,7 +11,7 @@ enum publish_mode {
   PUBLISH_ROOM_ASSIGNED = 0,
   PUBLISH_CURRENT_VOLTAGE,
   PUBLISH_CALIBRATION,
-  PUBLISH_TEMPERATURE,
+  PUBLISH_ROOM_TEMPERATURE,
   PUBLISH_DEFAULT
 };
 
@@ -24,6 +24,10 @@ struct calibration_struct {
   bool highestValuesSaved;
 };
 
+struct measurement_struct {
+  float temperature;
+};
+
 const char* wifi_network_name = "RUMNET";
 const char* wifi_network_password = "Colegio2019";
 const char* mqtt_broker_host = "44.212.35.193";
@@ -33,6 +37,7 @@ char calibration_sub_topic[60];
 char calibration_pub_topic[60];
 char room_assigned_pub_topic[60];
 char voltage_pub_topic[60];
+char room_temperature_pub_topic[60];
 const char *room_assigned;
 bool room_was_assigned;
 bool device_calibrated;
@@ -48,9 +53,11 @@ struct calibration_struct calibration_vals;
 
 float get_avg_temp_voltage();
 void collect_avg_temp_voltage(void *param);
+void send_room_temperature(void *param);
 void calibration(float temperature, bool resetValues);
 void publish(publish_mode mode, const char *publish_topic, float pbParameter);
 void publish(publish_mode mode, const char *publish_topic, calibration_struct pbParameter);
+void publish(publish_mode mode, const char *publish_topic, measurement_struct pbParameter);
 void publish(publish_mode mode, const char *publish_topic, const char *pbParameter);
 
 void initialize_wifi() {
@@ -149,9 +156,36 @@ void calibration(float temperature, bool resetValues) {
   publish(PUBLISH_CALIBRATION, calibration_pub_topic, calibration_vals);
 }
 
+float interpolation(calibration_struct cal_Values) {
+  float Interpolated_Temp; 
+  float avg_Voltage = (float) get_avg_temp_voltage();
+  Serial.printf("\nAverage voltage in interpolation: %.2f", avg_Voltage);
+  Interpolated_Temp = cal_Values.lowest_temp + ((avg_Voltage-cal_Values.lowest_volt)*((cal_Values.highest_temp-cal_Values.lowest_temp)/(cal_Values.highest_volt-cal_Values.lowest_volt))); 
+  return Interpolated_Temp;
+}
+
+void send_room_temperature(void *param) {
+  int i = 0;
+  while(1) {
+    vTaskDelay(5000/portTICK_PERIOD_MS); // give time for last_voltage_average to change again
+    if(device_calibrated) {
+      struct measurement_struct measurement;
+      measurement.temperature = interpolation(calibration_vals);
+      publish(PUBLISH_ROOM_TEMPERATURE,room_temperature_pub_topic, measurement);
+    }
+  }
+}
+
+void publish(publish_mode mode, const char *publish_topic, measurement_struct pbParameter) {
+  char message[sizeof(measurement_struct)*8];
+  sprintf(message, "{\"temperature\": %.2f}",pbParameter.temperature);
+  publish(mode, publish_topic, message);
+}
+
+
 void publish(publish_mode mode, const char *publish_topic, calibration_struct pbParameter) {
   char message[sizeof(calibration_struct)*8];
-  sprintf(message, "{\"lowestVolt\": %.2f, \"lowestTemp\": %.2f, \"highestVolt\": %.2f, \"highestTemp\": %.2f}", calibration_vals.lowest_volt, calibration_vals.lowest_temp, calibration_vals.highest_volt, calibration_vals.highest_temp);
+  sprintf(message, "{\"lowestVolt\": %.2f, \"lowestTemp\": %.2f, \"highestVolt\": %.2f, \"highestTemp\": %.2f}", pbParameter.lowest_volt, pbParameter.lowest_temp, pbParameter.highest_volt, pbParameter.highest_temp);
   publish(mode, publish_topic, message);
 }
 
@@ -174,11 +208,11 @@ void publish(publish_mode mode, const char *publish_topic, const char *pbParamet
     case PUBLISH_CALIBRATION:
       sprintf(message, "%s",pbParameter);
       break;
-    case PUBLISH_TEMPERATURE:
-      sprintf(message, "%s%s%s","{\"Temperature\": \"",pbParameter,"\"}");
+    case PUBLISH_ROOM_TEMPERATURE:
+      sprintf(message, "%s",pbParameter);
       break;
     default:
-      sprintf(message, "%s%s%s","{\"Value\": \"",pbParameter,"\"}");
+      sprintf(message, "%s",pbParameter);
       break;
     }
     Serial.printf("\nPublishing: %s", message);
@@ -213,16 +247,6 @@ void callback(char* topic, byte* payload, unsigned int length) {
   }
 }
 
-float interpolation(calibration_struct cal_Values){
-  delay(1000); //Giving enough time for data to be collected 
-  float Interpolated_Temp; 
-  float avg_Voltage = (float) get_avg_temp_voltage();
-  Serial.printf("AVG VOLT: %d", last_voltage_average);
-  Interpolated_Temp = cal_Values.lowest_temp + ((avg_Voltage-cal_Values.lowest_volt)*((cal_Values.highest_temp-cal_Values.lowest_temp)/(cal_Values.highest_volt-cal_Values.lowest_volt))); 
-  Serial.printf("Interpolated Temp: %f", Interpolated_Temp);
-  return Interpolated_Temp;
-}
-
 void setup() {
   Serial.begin(115200);
   // Start Wi-Fi connection
@@ -237,6 +261,7 @@ void setup() {
   sprintf(calibration_sub_topic, "Calibration/%s", esp32_macaddress);
   sprintf(calibration_pub_topic, "CalibrationPub/%s", esp32_macaddress);
   sprintf(voltage_pub_topic, "VoltData/%s", esp32_macaddress);
+  sprintf(room_temperature_pub_topic, "RoomTemp/%s", esp32_macaddress);
   // Configuration to get values from ESP32
   adc1_config_width(ADC_WIDTH_BIT_12);
   adc1_config_channel_atten(ADC1_CHANNEL_6, ADC_ATTEN_11db);
@@ -245,6 +270,7 @@ void setup() {
   last_voltage_average = NOTSET;
   // Create task to collect voltage from thermistor
   xTaskCreate(&collect_avg_temp_voltage, "Collect voltage", 2048, NULL, 5, NULL);
+  xTaskCreate(&send_room_temperature, "Send temperature", 2048, NULL, 4, NULL);
   calibration_vals.lowest_volt = 0;
   calibration_vals.lowest_temp = 0;
   calibration_vals.highest_volt = 0;
