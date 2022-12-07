@@ -12,6 +12,8 @@ This project aims to design and deploy an IoT temperature sensing application th
 - iOS shortcut: have Siri read the temperature of a specific room by making a call to Node-RED
 ## Node-RED UI Dashboard:
 - [Is Air Conditioner On Website](http://44.212.35.193:1880/ui/#!/0?socketid=ZmLaZWwm6VzPmOrtAABj)
+<img width="1512" alt="Screenshot 2022-12-06 at 10 05 37 PM" src="https://user-images.githubusercontent.com/70550781/206070007-3ea6d882-30e1-4138-b899-bb8ebd81c2f2.png">
+
 ## Team - Bit Byters:
 Luis Meléndez - luis.melendez28@upr.edu
 
