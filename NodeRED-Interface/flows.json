@@ -1,0 +1,2782 @@
+[
+    {
+        "id": "712b2c6becddb9b5",
+        "type": "aedes broker",
+        "z": "61070b65cc403ebd",
+        "name": "MQTT broker",
+        "mqtt_port": 1883,
+        "mqtt_ws_bind": "port",
+        "mqtt_ws_port": "",
+        "mqtt_ws_path": "",
+        "cert": "",
+        "key": "",
+        "certname": "",
+        "keyname": "",
+        "dburl": "mongodb://localhost:27017/config",
+        "usetls": false,
+        "x": 110,
+        "y": 2420,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "eb69796a79f10e5b",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "VoltageDataSubscriber",
+        "topic": "VoltData/94:E6:86:DF:E4:DC",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 1000,
+        "wires": [
+            [
+                "ba2635edc8a7134e"
+            ]
+        ]
+    },
+    {
+        "id": "d63ea7ef3c3d144d",
+        "type": "ui_button",
+        "z": "61070b65cc403ebd",
+        "name": "Commission - Create room assignment",
+        "group": "8bfd89167c58df1f",
+        "order": 2,
+        "width": "0",
+        "height": "0",
+        "passthru": false,
+        "label": "Create room assignment",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 500,
+        "y": 540,
+        "wires": [
+            [
+                "cbef670395108aef",
+                "50b628dd1c02f5e8"
+            ]
+        ]
+    },
+    {
+        "id": "880778d087b1116e",
+        "type": "ui_text_input",
+        "z": "61070b65cc403ebd",
+        "name": "Temperature",
+        "label": "",
+        "tooltip": "",
+        "group": "47eb34da7b6b58c3",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "passthru": true,
+        "mode": "text",
+        "delay": "1",
+        "topic": "topic",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "msg",
+        "x": 110,
+        "y": 1140,
+        "wires": [
+            [
+                "a2a19d1b8bdacd6d"
+            ]
+        ]
+    },
+    {
+        "id": "a2a19d1b8bdacd6d",
+        "type": "ui_button",
+        "z": "61070b65cc403ebd",
+        "name": "Calibration - Send Temperature to ESP32 A",
+        "group": "47eb34da7b6b58c3",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Send Temperature to ESP32 A",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "#1388B7",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 430,
+        "y": 1140,
+        "wires": [
+            [
+                "84ca0e3022fca898"
+            ]
+        ]
+    },
+    {
+        "id": "343c30a14af78eca",
+        "type": "ui_text",
+        "z": "61070b65cc403ebd",
+        "group": "6c61feb58f2037e1",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "name": "Current Voltage from ESP32 A",
+        "label": "From ESP32 A:",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "className": "",
+        "x": 470,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "803ec3f125b72d42",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "VoltageDataSubscriber",
+        "topic": "VoltData/94:E6:86:4B:F2:44",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 940,
+        "wires": [
+            [
+                "343c30a14af78eca"
+            ]
+        ]
+    },
+    {
+        "id": "6b3c61e4088a94ca",
+        "type": "ui_text_input",
+        "z": "61070b65cc403ebd",
+        "name": "Assign Room to ESP32 A",
+        "label": "Assign Room to ESP32 A",
+        "tooltip": "",
+        "group": "8bfd89167c58df1f",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "text",
+        "delay": "1",
+        "topic": "topic",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "msg",
+        "x": 170,
+        "y": 540,
+        "wires": [
+            [
+                "d63ea7ef3c3d144d"
+            ]
+        ]
+    },
+    {
+        "id": "bf96e27b02d10eb9",
+        "type": "ui_button",
+        "z": "61070b65cc403ebd",
+        "name": "Commission - Create room assignment",
+        "group": "8bfd89167c58df1f",
+        "order": 4,
+        "width": "0",
+        "height": "0",
+        "passthru": false,
+        "label": "Create room assignment",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 500,
+        "y": 600,
+        "wires": [
+            [
+                "a6e2ffaa9161affe",
+                "8bdd929ab088a861"
+            ]
+        ]
+    },
+    {
+        "id": "48b8d1b481bb229a",
+        "type": "ui_text_input",
+        "z": "61070b65cc403ebd",
+        "name": "Assign Room to ESP32 B",
+        "label": "Assign Room to ESP32 B",
+        "tooltip": "",
+        "group": "8bfd89167c58df1f",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "text",
+        "delay": "1",
+        "topic": "topic",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "msg",
+        "x": 170,
+        "y": 600,
+        "wires": [
+            [
+                "bf96e27b02d10eb9"
+            ]
+        ]
+    },
+    {
+        "id": "50b628dd1c02f5e8",
+        "type": "mqtt out",
+        "z": "61070b65cc403ebd",
+        "name": "Commission Pub",
+        "topic": "Commission/94:E6:86:4B:F2:44",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e715b89209433669",
+        "x": 810,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "8bdd929ab088a861",
+        "type": "mqtt out",
+        "z": "61070b65cc403ebd",
+        "name": "Commission Pub",
+        "topic": "Commission/94:E6:86:DF:E4:DC",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e715b89209433669",
+        "x": 810,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "cbef670395108aef",
+        "type": "debug",
+        "z": "61070b65cc403ebd",
+        "name": "debug 13",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "a6e2ffaa9161affe",
+        "type": "debug",
+        "z": "61070b65cc403ebd",
+        "name": "debug 14",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "ba2635edc8a7134e",
+        "type": "ui_text",
+        "z": "61070b65cc403ebd",
+        "group": "6c61feb58f2037e1",
+        "order": 2,
+        "width": "0",
+        "height": "0",
+        "name": "Current Voltage from ESP32 B",
+        "label": "From ESP32 B:",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "className": "",
+        "x": 470,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "aa8fd667f99af05d",
+        "type": "ui_text_input",
+        "z": "61070b65cc403ebd",
+        "name": "Temperature",
+        "label": "",
+        "tooltip": "",
+        "group": "47eb34da7b6b58c3",
+        "order": 4,
+        "width": "0",
+        "height": "0",
+        "passthru": true,
+        "mode": "text",
+        "delay": "1",
+        "topic": "topic",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "msg",
+        "x": 110,
+        "y": 1260,
+        "wires": [
+            [
+                "dbfd1577a4a3bec1"
+            ]
+        ]
+    },
+    {
+        "id": "dbfd1577a4a3bec1",
+        "type": "ui_button",
+        "z": "61070b65cc403ebd",
+        "name": "Calibration - Send Temperature to ESP32 B",
+        "group": "47eb34da7b6b58c3",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Send Temperature to ESP32 B",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "#1388B7",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 430,
+        "y": 1260,
+        "wires": [
+            [
+                "d692a92623ab440a"
+            ]
+        ]
+    },
+    {
+        "id": "7963f7d49456fb8d",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "Assigned Room",
+        "topic": "AssignedRoom/94:E6:86:4B:F2:44",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 740,
+        "wires": [
+            [
+                "c1266a98c7880913",
+                "7c38df8a42673da0"
+            ]
+        ]
+    },
+    {
+        "id": "c1266a98c7880913",
+        "type": "ui_text",
+        "z": "61070b65cc403ebd",
+        "group": "eee1df93fb11605e",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "Room Assigned for ESP32 A",
+        "label": "Room Assigned for ESP32 A:",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "className": "",
+        "x": 460,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "08dfe2c6ef8909e7",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "Assigned Room",
+        "topic": "AssignedRoom/94:E6:86:DF:E4:DC",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 800,
+        "wires": [
+            [
+                "d0db91b53a2be391",
+                "405aa208b0a74f48"
+            ]
+        ]
+    },
+    {
+        "id": "d0db91b53a2be391",
+        "type": "ui_text",
+        "z": "61070b65cc403ebd",
+        "group": "eee1df93fb11605e",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "Room Assigned for ESP32 B",
+        "label": "Room Assigned for ESP32 B:",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "className": "",
+        "x": 460,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "84ca0e3022fca898",
+        "type": "mqtt out",
+        "z": "61070b65cc403ebd",
+        "name": "Calibration Pub",
+        "topic": "Calibration/94:E6:86:4B:F2:44",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e715b89209433669",
+        "x": 780,
+        "y": 1140,
+        "wires": []
+    },
+    {
+        "id": "d692a92623ab440a",
+        "type": "mqtt out",
+        "z": "61070b65cc403ebd",
+        "name": "Calibration Pub",
+        "topic": "Calibration/94:E6:86:DF:E4:DC",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e715b89209433669",
+        "x": 780,
+        "y": 1260,
+        "wires": []
+    },
+    {
+        "id": "d67f403fbfb0c0e4",
+        "type": "ui_button",
+        "z": "61070b65cc403ebd",
+        "name": "Reset Calibration Button",
+        "group": "a87e32ce63f84c89",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Reset Calibration for ESP32 A",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "#D61E10",
+        "className": "",
+        "icon": "",
+        "payload": "reset",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 790,
+        "y": 1080,
+        "wires": [
+            [
+                "84ca0e3022fca898"
+            ]
+        ]
+    },
+    {
+        "id": "4209b1fbf00e3ce3",
+        "type": "ui_button",
+        "z": "61070b65cc403ebd",
+        "name": "Reset Calibration Button",
+        "group": "a87e32ce63f84c89",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Reset Calibration for ESP32 B",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "#D61E10",
+        "className": "",
+        "icon": "",
+        "payload": "reset",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 770,
+        "y": 1200,
+        "wires": [
+            [
+                "d692a92623ab440a"
+            ]
+        ]
+    },
+    {
+        "id": "1771877435f13859",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "function 1",
+        "func": "let room1 = (msg.topic === \"ESP32A\") ? msg.payload.room: flow.get(\"savedRoom1\") || \"\";\nlet lv1 = (msg.topic === \"ESP32A\") ? msg.payload.lowestVolt : flow.get(\"lv1\") || \"\";\nlet lt1 = (msg.topic === \"ESP32A\") ? msg.payload.lowestTemp : flow.get(\"lt1\") || \"\";\nlet hv1 = (msg.topic === \"ESP32A\") ? msg.payload.highestVolt : flow.get(\"hv1\") || \"\";\nlet ht1 = (msg.topic === \"ESP32A\") ? msg.payload.highestTemp : flow.get(\"ht1\") || \"\";\nlet room2 = (msg.topic === \"ESP32B\") ? msg.payload.room : flow.get(\"savedRoom2\") || \"\";\nlet lv2 = (msg.topic === \"ESP32B\") ? msg.payload.lowestVolt : flow.get(\"lv2\") || \"\";\nlet lt2 = (msg.topic === \"ESP32B\") ? msg.payload.lowestTemp : flow.get(\"lt2\") || \"\";\nlet hv2 = (msg.topic === \"ESP32B\") ? msg.payload.highestVolt : flow.get(\"hv2\") || \"\";\nlet ht2 = (msg.topic === \"ESP32B\") ? msg.payload.highestTemp : flow.get(\"ht2\") || \"\";\n\nmsg.payload = [\n    {\n        \"room\": room1,\n        \"lowestVolt\": lv1,\n        \"lowestTemp\": lt1,\n        \"highestVolt\": hv1,\n        \"highestTemp\": ht1\n    },\n    {\n        \"room\": room2,\n        \"lowestVolt\": lv2,\n        \"lowestTemp\": lt2,\n        \"highestVolt\": hv2,\n        \"highestTemp\": ht2\n    },\n];\n\nflow.set(\"savedRoom1\", room1);\nflow.set(\"lv1\", lv1);\nflow.set(\"lt1\", lt1);\nflow.set(\"hv1\", hv1);\nflow.set(\"ht1\", ht1);\nflow.set(\"savedRoom2\", room2);\nflow.set(\"lv2\", lv2);\nflow.set(\"lt2\", lt2);\nflow.set(\"hv2\", hv2);\nflow.set(\"ht2\", ht2);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 1480,
+        "wires": [
+            [
+                "5b2f490438f7955f"
+            ]
+        ]
+    },
+    {
+        "id": "5b2f490438f7955f",
+        "type": "ui_table",
+        "z": "61070b65cc403ebd",
+        "group": "74b5acc0efef9305",
+        "name": "Table of Calibration",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "columns": [],
+        "outputs": 0,
+        "cts": false,
+        "x": 670,
+        "y": 1480,
+        "wires": []
+    },
+    {
+        "id": "7e66690b50422242",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "Calibration A Sub ",
+        "topic": "CalibrationPub/94:E6:86:4B:F2:44",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 1380,
+        "wires": [
+            [
+                "31f10623b82bd4fe"
+            ]
+        ]
+    },
+    {
+        "id": "31f10623b82bd4fe",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "function 2",
+        "func": "if(msg.topic === \"jumpA\"){\n    flow.set(\"jumpsaved\", msg.payload);\n} else if (msg.topic === \"CalibrationPub/94:E6:86:4B:F2:44\"){\n    msg.payload.room = flow.get(\"jumpsaved\") || \"\";\n    msg.topic = \"ESP32A\";\n    return msg;\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 1400,
+        "wires": [
+            [
+                "1771877435f13859"
+            ]
+        ]
+    },
+    {
+        "id": "17b067b2cacfca91",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "roomOfESP32A",
+        "topic": "jumpA",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 1420,
+        "wires": [
+            [
+                "31f10623b82bd4fe",
+                "cd82a6d0e3d7353c"
+            ]
+        ]
+    },
+    {
+        "id": "7c38df8a42673da0",
+        "type": "mqtt out",
+        "z": "61070b65cc403ebd",
+        "name": "roomOfESP32A",
+        "topic": "jumpA",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e715b89209433669",
+        "x": 320,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "405aa208b0a74f48",
+        "type": "mqtt out",
+        "z": "61070b65cc403ebd",
+        "name": "roomOfESP32B",
+        "topic": "jumpB",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e715b89209433669",
+        "x": 320,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "80d6b29d98b0b7bf",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "Calibration B Sub",
+        "topic": "CalibrationPub/94:E6:86:DF:E4:DC",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 1520,
+        "wires": [
+            [
+                "bdc722cffc88fadd"
+            ]
+        ]
+    },
+    {
+        "id": "bdc722cffc88fadd",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "function 3",
+        "func": "if(msg.topic === \"jumpB\"){\n    flow.set(\"jumpsaved\", msg.payload);\n} else if (msg.topic === \"CalibrationPub/94:E6:86:DF:E4:DC\"){\n    msg.payload.room = flow.get(\"jumpsaved\") || \"\";\n    msg.topic = \"ESP32B\";\n    return msg;\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 1540,
+        "wires": [
+            [
+                "1771877435f13859"
+            ]
+        ]
+    },
+    {
+        "id": "91d17d8c3b02cc91",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "roomOfESP32B",
+        "topic": "jumpB",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 1560,
+        "wires": [
+            [
+                "bdc722cffc88fadd",
+                "ab9c23d8336f6d17"
+            ]
+        ]
+    },
+    {
+        "id": "e729703a4730cd03",
+        "type": "ui_chart",
+        "z": "61070b65cc403ebd",
+        "name": "",
+        "group": "860e7b83ad31b0ad",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "Temperature vs Time",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "WAITING FOR DATA",
+        "dot": true,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 800,
+        "y": 1980,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "468ff5eb05d672d6",
+        "type": "ui_chart",
+        "z": "61070b65cc403ebd",
+        "name": "",
+        "group": "52622085a38c253a",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "Temperature vs Time",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "WAITING FOR DATA",
+        "dot": true,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "1",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 780,
+        "y": 2380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3363907013371b4d",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "Temperature of ESP32B",
+        "topic": "RoomTemp/94:E6:86:DF:E4:DC",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 2260,
+        "wires": [
+            [
+                "9591c51a9283aa38",
+                "c513ae05a8ea838b",
+                "374f3d6d46f2e2cf"
+            ]
+        ]
+    },
+    {
+        "id": "5028bb0272fa89e2",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "Temperature of ESP32A",
+        "topic": "RoomTemp/94:E6:86:4B:F2:44",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 1860,
+        "wires": [
+            [
+                "7cd13da7cab91887",
+                "b05fe4bdb8bfc131",
+                "313deb67ce27ddc6"
+            ]
+        ]
+    },
+    {
+        "id": "7cd13da7cab91887",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "function 4",
+        "func": "msg.payload = msg.payload.temperature;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 1980,
+        "wires": [
+            [
+                "e729703a4730cd03"
+            ]
+        ]
+    },
+    {
+        "id": "9591c51a9283aa38",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "function 5",
+        "func": "msg.payload = msg.payload.temperature\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 2380,
+        "wires": [
+            [
+                "468ff5eb05d672d6"
+            ]
+        ]
+    },
+    {
+        "id": "93565159997ad57d",
+        "type": "ui_gauge",
+        "z": "61070b65cc403ebd",
+        "name": "",
+        "group": "860e7b83ad31b0ad",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Current Temperature",
+        "label": "",
+        "format": "{{value}}",
+        "min": "20",
+        "max": "125",
+        "colors": [
+            "#0aa1ff",
+            "#00e66f",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 800,
+        "y": 1860,
+        "wires": []
+    },
+    {
+        "id": "b05fe4bdb8bfc131",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "function 6",
+        "func": "if (msg.topic === \"TempUnitA\") {\n    if (msg.payload === \"Fahrenheit\") {\n        flow.set(\"minMaxA\", { min: 20, max: 125 });\n    }\n    else {\n        flow.set(\"minMaxA\", { min: 0, max: 55 });\n    }\n}\nelse if (msg.topic === \"RoomTemp/94:E6:86:4B:F2:44\") {\n    msg.payload = msg.payload.temperature;\n}\nmsg.ui_control = flow.get(\"minMaxA\");\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 1860,
+        "wires": [
+            [
+                "93565159997ad57d"
+            ]
+        ]
+    },
+    {
+        "id": "c513ae05a8ea838b",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "function 7",
+        "func": "if (msg.topic === \"TempUnitB\") {\n    if (msg.payload === \"Fahrenheit\") {\n        flow.set(\"minMaxB\", { min: 20, max: 125 });\n    }\n    else {\n        flow.set(\"minMaxB\", { min: 0, max: 55 });\n    }\n}\nelse if (msg.topic === \"RoomTemp/94:E6:86:4B:F2:44\") {\n    msg.payload = msg.payload.temperature;\n}\nmsg.ui_control = flow.get(\"minMaxB\");\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 2260,
+        "wires": [
+            [
+                "9fd14aac445914d0"
+            ]
+        ]
+    },
+    {
+        "id": "9fd14aac445914d0",
+        "type": "ui_gauge",
+        "z": "61070b65cc403ebd",
+        "name": "",
+        "group": "52622085a38c253a",
+        "order": 3,
+        "width": 6,
+        "height": 4,
+        "gtype": "gage",
+        "title": "Current Temperature",
+        "label": "",
+        "format": "{{value}}",
+        "min": "20",
+        "max": "125",
+        "colors": [
+            "#0aa1ff",
+            "#00e66f",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 780,
+        "y": 2260,
+        "wires": []
+    },
+    {
+        "id": "028f53bda0782126",
+        "type": "ui_button",
+        "z": "61070b65cc403ebd",
+        "name": "",
+        "group": "860e7b83ad31b0ad",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Clear values",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "#D88817",
+        "className": "",
+        "icon": "",
+        "payload": "[]",
+        "payloadType": "json",
+        "topic": "RoomTemp/94:E6:86:4B:F2:44",
+        "topicType": "msg",
+        "x": 590,
+        "y": 1920,
+        "wires": [
+            [
+                "e729703a4730cd03",
+                "93565159997ad57d"
+            ]
+        ]
+    },
+    {
+        "id": "a8b3adea8d6d7d5b",
+        "type": "ui_button",
+        "z": "61070b65cc403ebd",
+        "name": "",
+        "group": "52622085a38c253a",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Clear values",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "#D88817",
+        "className": "",
+        "icon": "",
+        "payload": "[]",
+        "payloadType": "json",
+        "topic": "RoomTemp/94:E6:86:4B:F2:44",
+        "topicType": "msg",
+        "x": 570,
+        "y": 2320,
+        "wires": [
+            [
+                "9fd14aac445914d0",
+                "468ff5eb05d672d6"
+            ]
+        ]
+    },
+    {
+        "id": "cd82a6d0e3d7353c",
+        "type": "ui_text",
+        "z": "61070b65cc403ebd",
+        "group": "860e7b83ad31b0ad",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "RoomForChart",
+        "label": "Room:",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "className": "",
+        "x": 280,
+        "y": 1460,
+        "wires": []
+    },
+    {
+        "id": "ab9c23d8336f6d17",
+        "type": "ui_text",
+        "z": "61070b65cc403ebd",
+        "group": "52622085a38c253a",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "RoomForChart",
+        "label": "Room:",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "className": "",
+        "x": 280,
+        "y": 1600,
+        "wires": []
+    },
+    {
+        "id": "fe9075c8dcf6963c",
+        "type": "ui_text",
+        "z": "61070b65cc403ebd",
+        "group": "860e7b83ad31b0ad",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "A.C. On Text",
+        "label": "The AC is turned ",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "className": "",
+        "x": 810,
+        "y": 1700,
+        "wires": []
+    },
+    {
+        "id": "374f3d6d46f2e2cf",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "Is air conditioner on?",
+        "func": "if (msg.topic === \"TempUnitB\") {\n    flow.set(\"unit\", msg.payload);\n}\nif ((flow.get(\"unit\") || \"\") === \"Fahrenheit\") {\n    msg.payload = (msg.payload.temperature <= 75) ? \"ON\" : \"OFF\";\n}\nelse {\n    msg.payload = (msg.payload.temperature <= 27) ? \"ON\" : \"OFF\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 2100,
+        "wires": [
+            [
+                "30f8a1e1cf380893"
+            ]
+        ]
+    },
+    {
+        "id": "30f8a1e1cf380893",
+        "type": "ui_text",
+        "z": "61070b65cc403ebd",
+        "group": "52622085a38c253a",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "A.C. On Text",
+        "label": "The AC is turned ",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "className": "",
+        "x": 810,
+        "y": 2100,
+        "wires": []
+    },
+    {
+        "id": "313deb67ce27ddc6",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "Is air conditioner on?",
+        "func": "if (msg.topic === \"TempUnitA\") {\n    flow.set(\"unit\", msg.payload);\n}\nif ((flow.get(\"unit\") || \"\") === \"Fahrenheit\"){\n    msg.payload = (msg.payload.temperature <= 75) ? \"ON\" : \"OFF\";\n}\nelse{\n    msg.payload = (msg.payload.temperature <= 27) ? \"ON\" : \"OFF\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 1700,
+        "wires": [
+            [
+                "fe9075c8dcf6963c"
+            ]
+        ]
+    },
+    {
+        "id": "ecf722ed9858b335",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "roomOfESP32A",
+        "topic": "jumpA",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 3360,
+        "wires": [
+            [
+                "28e12ee9b9de9786"
+            ]
+        ]
+    },
+    {
+        "id": "40e160136c1bcbdb",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "roomOfESP32B",
+        "topic": "jumpB",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 3400,
+        "wires": [
+            [
+                "28e12ee9b9de9786"
+            ]
+        ]
+    },
+    {
+        "id": "7cc87896db7dd48c",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "Temperature of ESP32A",
+        "topic": "RoomTemp/94:E6:86:4B:F2:44",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 3280,
+        "wires": [
+            [
+                "28e12ee9b9de9786"
+            ]
+        ]
+    },
+    {
+        "id": "e03c8cc46e343524",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "Temperature of ESP32B",
+        "topic": "RoomTemp/94:E6:86:DF:E4:DC",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 3320,
+        "wires": [
+            [
+                "28e12ee9b9de9786"
+            ]
+        ]
+    },
+    {
+        "id": "28e12ee9b9de9786",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "Create msg",
+        "func": "let room1 = (msg.topic === \"jumpA\") ? msg.payload : flow.get(\"jumpAsaved\") || \"\";\nlet room2 = (msg.topic === \"jumpB\") ? msg.payload : flow.get(\"jumpBsaved\") || \"\";\nlet temp1 = (msg.topic === \"RoomTemp/94:E6:86:4B:F2:44\") ? msg.payload.temperature : flow.get(\"tempAsaved\") || \"\";\nlet temp2 = (msg.topic === \"RoomTemp/94:E6:86:DF:E4:DC\") ? msg.payload.temperature : flow.get(\"tempBsaved\") || \"\";\nlet tempUnitA = (msg.topic === \"TempUnitA\") ? msg.payload : flow.get(\"tempUnitA\") || \"\";;\nlet tempUnitB = (msg.topic === \"TempUnitB\") ? msg.payload : flow.get(\"tempUnitB\") || \"\";;\nlet roomFromShortcut = (msg.payload.room) ? msg.payload.room : flow.get(\"shortcutmsg\") || \"\";;\nvar shorcutWasExecuted = (msg.payload.room) ? true : false;\nmsg.payload = {\n    \"room1\" : room1,\n    \"room2\" : room2,\n    \"temp1\" : temp1,\n    \"temp2\" : temp2,\n    \"tempUnitA\": tempUnitA,\n    \"tempUnitB\": tempUnitB,\n    \"roomFromShortcut\": roomFromShortcut\n}\n\nflow.set(\"jumpAsaved\", room1);\nflow.set(\"jumpBsaved\", room2);\nflow.set(\"tempAsaved\", temp1);\nflow.set(\"tempBsaved\", temp2);\nflow.set(\"tempUnitA\", tempUnitA);\nflow.set(\"tempUnitB\", tempUnitB);\nflow.set(\"shortcutmsg\", roomFromShortcut);\n//If the shortcut was called:\nif (shorcutWasExecuted) {\n    return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 3340,
+        "wires": [
+            [
+                "4b33347a8055ed12",
+                "29c295d69e176bc1"
+            ]
+        ]
+    },
+    {
+        "id": "4b33347a8055ed12",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "String response",
+        "func": "let room = msg.payload.roomFromShortcut\nif(room === msg.payload.room1){\n    let temp = msg.payload;\n    msg.payload = \"The temperature in the room is \" + temp.temp1.toString();\n    if (temp.tempUnitA === \"Fahrenheit\"){\n        if (temp.temp1 <= 75.0) {\n            msg.payload += \" fahrenheit. The AC is on.\";\n        }\n        else {\n            msg.payload += \" fahrenheit. The AC is off.\";\n        }\n    }\n    else if (temp.tempUnitA === \"Celsius\") {\n        if (temp.temp1 <= 27) {\n            msg.payload += \" celsius. The AC is on.\";\n        }\n        else {\n            msg.payload += \" celsius. The AC is off.\";\n        }\n    }\n}\nelse if (room === msg.payload.room2) {\n    let temp = msg.payload;\n    msg.payload = \"The temperature in the room is \" + temp.temp2.toString();\n    if (temp.tempUnitB === \"Fahrenheit\") {\n        if (temp.temp2 <= 75.0) {\n            msg.payload += \" fahrenheit. The AC is on.\";\n        }\n        else {\n            msg.payload += \" fahrenheit. The AC is off.\";\n        }\n    }\n    else if (temp.tempUnitB === \"Celsius\") {\n        if (temp.temp2 <= 27) {\n            msg.payload += \" celsius. The AC is on.\";\n        }\n        else {\n            msg.payload += \" celsius. The AC is off.\";\n        }\n    }\n}\nelse{\n    msg.payload = \"This room is not currently assigned to an E S P 32 yet. Please try another one.\"\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 3340,
+        "wires": [
+            [
+                "6c7a1693ea490ce3",
+                "68a5d43e7105f5cb"
+            ]
+        ]
+    },
+    {
+        "id": "ca27de8c0623f29c",
+        "type": "debug",
+        "z": "61070b65cc403ebd",
+        "name": "debug 19",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 320,
+        "y": 3560,
+        "wires": []
+    },
+    {
+        "id": "6c7a1693ea490ce3",
+        "type": "http response",
+        "z": "61070b65cc403ebd",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 730,
+        "y": 3340,
+        "wires": []
+    },
+    {
+        "id": "68a5d43e7105f5cb",
+        "type": "debug",
+        "z": "61070b65cc403ebd",
+        "name": "debug 20",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 720,
+        "y": 3380,
+        "wires": []
+    },
+    {
+        "id": "0f2475d16a54f329",
+        "type": "http in",
+        "z": "61070b65cc403ebd",
+        "name": "Shortcut result",
+        "url": "/result",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 160,
+        "y": 3520,
+        "wires": [
+            [
+                "28e12ee9b9de9786",
+                "ca27de8c0623f29c"
+            ]
+        ]
+    },
+    {
+        "id": "03626c9c8a77fd98",
+        "type": "comment",
+        "z": "61070b65cc403ebd",
+        "name": "Siri Shortcut",
+        "info": "",
+        "x": 110,
+        "y": 3220,
+        "wires": []
+    },
+    {
+        "id": "18958725dde28dc3",
+        "type": "comment",
+        "z": "61070b65cc403ebd",
+        "name": "Commission",
+        "info": "",
+        "x": 130,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "e9f8c893fc37bfb5",
+        "type": "comment",
+        "z": "61070b65cc403ebd",
+        "name": "Calibration",
+        "info": "",
+        "x": 100,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "b637b75b727e4655",
+        "type": "comment",
+        "z": "61070b65cc403ebd",
+        "name": "Dashboard",
+        "info": "",
+        "x": 100,
+        "y": 1680,
+        "wires": []
+    },
+    {
+        "id": "cf2cf3c53be1023f",
+        "type": "ui_chart",
+        "z": "61070b65cc403ebd",
+        "name": "Previous Measurements",
+        "group": "252c939a6e9aaf1c",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "Temperature Vs Time",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "bezier",
+        "nodata": "WAITING FOR DATA",
+        "dot": true,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "2",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#38e555",
+            "#ff7f0e",
+            "#e02c1f",
+            "#e9cf2b",
+            "#a295a3",
+            "#ff9896",
+            "#9467bd",
+            "#30d9ce"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1030,
+        "y": 2940,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "19f19cf5a3250f25",
+        "type": "comment",
+        "z": "61070b65cc403ebd",
+        "name": "Previous Measurements",
+        "info": "",
+        "x": 140,
+        "y": 2500,
+        "wires": []
+    },
+    {
+        "id": "c7b3cc123831c183",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "function 10",
+        "func": "msg.collection = \"nodered\";\nlet roomA = (msg.topic === \"jumpA\") ? msg.payload : flow.get(\"jumpAsaved\") || \"\";\nlet tempUnitA = (msg.topic === \"TempUnitA\") ? msg.payload : flow.get(\"tempUnitA\") || \"\";\nif (msg.topic === \"RoomTemp/94:E6:86:4B:F2:44\"){\n    let tempA = msg.payload.temperature;\n    msg.payload = { \"temperature\": tempA, \"room\": roomA, \"tempUnit\": tempUnitA, \"time\": (new Date()).toISOString() };\n    return msg;\n}\nflow.set(\"jumpAsaved\", roomA);\nflow.set(\"tempUnitA\", tempUnitA);\n\nlet roomB = (msg.topic === \"jumpB\") ? msg.payload : flow.get(\"jumpBsaved\") || \"\";\nlet tempUnitB = (msg.topic === \"TempUnitB\") ? msg.payload : flow.get(\"tempUnitB\") || \"\";\nif (msg.topic === \"RoomTemp/94:E6:86:DF:E4:DC\"){\n    let tempB = msg.payload.temperature;\n    msg.payload = { \"temperature\": tempB, \"room\": roomB, \"tempUnit\": tempUnitB, \"time\": (new Date()).toISOString() };\n    return msg;\n}\nflow.set(\"jumpBsaved\", roomB);\nflow.set(\"tempUnitB\", tempUnitB);\n\n\n// let roomFromShortcut = (msg.payload.room) ? msg.payload.room : flow.get(\"shortcutmsg\") || \"\";;\n// var shorcutWasExecuted = (msg.payload.room) ? true : false;\n// msg.payload = {\n//     \"roomA\": roomA,\n//     \"roomB\": roomB,\n//     \"tempA\": tempA,\n//     \"tempB\": tempB,\n//     \"roomFromShortcut\": roomFromShortcut\n// }\n\n// flow.set(\"jumpAsaved\", roomA);\n// flow.set(\"jumpBsaved\", roomB);\n// flow.set(\"tempAsaved\", tempA);\n// flow.set(\"tempBsaved\", tempB);\n// flow.set(\"shortcutmsg\", roomFromShortcut);\n// //If the shortcut was called:\n\n// let roomA = (msg.topic === \"jumpA\") || flow.get();\n// let temp = (msg.topic === \"RoomTemp/94:E6:86:4B:F2:44\" || msg.topic === \"RoomTemp/94:E6:86:DF:E4:DC\");\n// msg.payload = { \"temperature\": temp, \"room\": room, \"time\": (new Date()).toISOString()};\n// return msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 2640,
+        "wires": [
+            [
+                "25c8d8956bb8e169"
+            ]
+        ]
+    },
+    {
+        "id": "25c8d8956bb8e169",
+        "type": "mongodb out",
+        "z": "61070b65cc403ebd",
+        "mongodb": "96bcc585530da614",
+        "name": "MongoDB",
+        "collection": "nodered",
+        "payonly": false,
+        "upsert": false,
+        "multi": false,
+        "operation": "insert",
+        "x": 650,
+        "y": 2640,
+        "wires": []
+    },
+    {
+        "id": "ce10be88042ca582",
+        "type": "comment",
+        "z": "61070b65cc403ebd",
+        "name": "Insert Measurements",
+        "info": "",
+        "x": 180,
+        "y": 2540,
+        "wires": []
+    },
+    {
+        "id": "9433f123d40dcdea",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "function 11",
+        "func": "var msg = {};\nmsg.collection = \"nodered\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 2940,
+        "wires": [
+            [
+                "c851c2bc68e28521"
+            ]
+        ]
+    },
+    {
+        "id": "2b2fb30cb3184390",
+        "type": "ui_button",
+        "z": "61070b65cc403ebd",
+        "name": "Button to Get Past measurements",
+        "group": "252c939a6e9aaf1c",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Get all temperatures",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "#1388B7",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 220,
+        "y": 2940,
+        "wires": [
+            [
+                "9433f123d40dcdea"
+            ]
+        ]
+    },
+    {
+        "id": "4444ba189a59628e",
+        "type": "comment",
+        "z": "61070b65cc403ebd",
+        "name": "Read Measurements",
+        "info": "",
+        "x": 170,
+        "y": 2900,
+        "wires": []
+    },
+    {
+        "id": "c851c2bc68e28521",
+        "type": "mongodb in",
+        "z": "61070b65cc403ebd",
+        "mongodb": "96bcc585530da614",
+        "name": "MongoDB",
+        "collection": "nodered",
+        "operation": "find",
+        "x": 610,
+        "y": 2940,
+        "wires": [
+            [
+                "6142568328d5c426"
+            ]
+        ]
+    },
+    {
+        "id": "0604eaf5b9acce71",
+        "type": "comment",
+        "z": "61070b65cc403ebd",
+        "name": "Delete Measurements",
+        "info": "",
+        "x": 180,
+        "y": 3120,
+        "wires": []
+    },
+    {
+        "id": "93be8ef27351f3b8",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "function 12",
+        "func": "var msg = {};\nmsg.collection = \"nodered\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 3160,
+        "wires": [
+            [
+                "2b7b1766236acbc7"
+            ]
+        ]
+    },
+    {
+        "id": "136211f75fd59370",
+        "type": "ui_button",
+        "z": "61070b65cc403ebd",
+        "name": "Button to Delete Past measurements",
+        "group": "252c939a6e9aaf1c",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Delete temperature values from database",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "#D61E10",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 230,
+        "y": 3160,
+        "wires": [
+            [
+                "93be8ef27351f3b8"
+            ]
+        ]
+    },
+    {
+        "id": "2b7b1766236acbc7",
+        "type": "mongodb out",
+        "z": "61070b65cc403ebd",
+        "mongodb": "96bcc585530da614",
+        "name": "MongoDB",
+        "collection": "nodered",
+        "payonly": false,
+        "upsert": false,
+        "multi": false,
+        "operation": "delete",
+        "x": 690,
+        "y": 3160,
+        "wires": []
+    },
+    {
+        "id": "6142568328d5c426",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "function 13",
+        "func": "const tempArray = [];\nconst seriesArray = new Array();\nlet seriesArrLength = 0;\nlet length = msg.payload.length;\nlet seriesName;\nfor (let i = 0; i < length; i++) {\n    seriesName = msg.payload[i].payload.room;\n    if (seriesArray.includes(seriesName) == false ){\n        seriesArray[seriesArrLength] = msg.payload[i].payload.room;\n        seriesArrLength++;\n    }\n}\nlet countTempArray = 0;\nlet countTemporary; \nfor (let i = 0; i < seriesArrLength; i++){\n    let seriesName = seriesArray[i];\n    const temporaryArr = [];\n    countTemporary = 0;\n    for (let j = 0; j < length; j++) {\n        if (msg.payload[j].payload.room === seriesName){\n            temporaryArr[countTemporary] = { \"x\": (new Date(msg.payload[j].payload.time)).valueOf(), \"y\": msg.payload[j].payload.temperature}; \n            countTemporary++;\n        }\n    }\n    tempArray[countTempArray] = temporaryArr;\n    countTempArray++;\n}\nif (seriesArray.length === 0) {\n    msg.payload = [];\n}\nelse {\n    msg.payload = [\n        {\n            \"series\": seriesArray,\n            \"data\": tempArray,\n            \"labels\": [\"\"]\n        }\n    ];\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 2940,
+        "wires": [
+            [
+                "cf2cf3c53be1023f"
+            ]
+        ]
+    },
+    {
+        "id": "5aaee905a26e9647",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "roomOfESP32A",
+        "topic": "jumpA",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 240,
+        "y": 2680,
+        "wires": [
+            [
+                "c7b3cc123831c183"
+            ]
+        ]
+    },
+    {
+        "id": "d008acf215dfbf4d",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "roomOfESP32B",
+        "topic": "jumpB",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 240,
+        "y": 2720,
+        "wires": [
+            [
+                "c7b3cc123831c183"
+            ]
+        ]
+    },
+    {
+        "id": "acc884fde47399bc",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "Temperature of ESP32A",
+        "topic": "RoomTemp/94:E6:86:4B:F2:44",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 220,
+        "y": 2600,
+        "wires": [
+            [
+                "c7b3cc123831c183"
+            ]
+        ]
+    },
+    {
+        "id": "a52c043d17bfe142",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "Temperature of ESP32B",
+        "topic": "RoomTemp/94:E6:86:DF:E4:DC",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 220,
+        "y": 2640,
+        "wires": [
+            [
+                "c7b3cc123831c183"
+            ]
+        ]
+    },
+    {
+        "id": "eba06280666acf5a",
+        "type": "comment",
+        "z": "61070b65cc403ebd",
+        "name": "Policies",
+        "info": "",
+        "x": 130,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "eaf8790e34a0be70",
+        "type": "ui_button",
+        "z": "61070b65cc403ebd",
+        "name": "Button for setting wait time",
+        "group": "830dc150db4bee8b",
+        "order": 2,
+        "width": "0",
+        "height": "0",
+        "passthru": false,
+        "label": "Set Submission Time Interval",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "#A59715",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 460,
+        "y": 140,
+        "wires": [
+            [
+                "1954ee71926e1bee"
+            ]
+        ]
+    },
+    {
+        "id": "6e64783de0e6e126",
+        "type": "ui_text_input",
+        "z": "61070b65cc403ebd",
+        "name": "Input: Wait time for ESP32",
+        "label": "Time interval (in seconds)",
+        "tooltip": "",
+        "group": "830dc150db4bee8b",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "number",
+        "delay": "1",
+        "topic": "topic",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "msg",
+        "x": 200,
+        "y": 140,
+        "wires": [
+            [
+                "eaf8790e34a0be70"
+            ]
+        ]
+    },
+    {
+        "id": "2b96a39640d13bae",
+        "type": "debug",
+        "z": "61070b65cc403ebd",
+        "name": "debug 21",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "a65cfe5c08ec1f88",
+        "type": "mqtt out",
+        "z": "61070b65cc403ebd",
+        "name": "Wait Time Pub",
+        "topic": "TimeIntervalForSubmission",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e715b89209433669",
+        "x": 940,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "1954ee71926e1bee",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "function 14",
+        "func": "if (msg.topic === \"InterestInLatestPolicies\"){\n    if (msg.payload == true) {\n        msg.payload = flow.get(\"input\");\n    }\n}\nelse{\n    let input = (Math.round(msg.payload)).toString();\n    flow.set(\"input\", input);\n    msg.payload = input;\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 690,
+        "y": 140,
+        "wires": [
+            [
+                "2b96a39640d13bae",
+                "a65cfe5c08ec1f88"
+            ]
+        ]
+    },
+    {
+        "id": "733d7a2c982537b0",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "Interest in Latest Policies Sub",
+        "topic": "InterestInLatestPolicies",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 460,
+        "y": 180,
+        "wires": [
+            [
+                "1954ee71926e1bee"
+            ]
+        ]
+    },
+    {
+        "id": "f7043854268bc636",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "function 15",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 280,
+        "wires": [
+            [
+                "717d9a74e6e00f57"
+            ]
+        ]
+    },
+    {
+        "id": "b4f099830816aeef",
+        "type": "ui_multistate_switch",
+        "z": "61070b65cc403ebd",
+        "name": "Temperature Switch",
+        "group": "08a68cfa00e5900d",
+        "order": 2,
+        "width": "0",
+        "height": "0",
+        "label": "ESP32 A:",
+        "stateField": "payload",
+        "enableField": "enable",
+        "passthroughField": "passthrough",
+        "inputMsgField": "inputmsg",
+        "rounded": true,
+        "useThemeColors": false,
+        "hideSelectedLabel": false,
+        "multilineLabel": false,
+        "passThrough": "never",
+        "inputMsg": "all",
+        "userInput": "enabled_show",
+        "options": [
+            {
+                "label": "Fahrenheit",
+                "value": "Fahrenheit",
+                "valueType": "str",
+                "color": "#a59715"
+            },
+            {
+                "label": "Celsius",
+                "value": "Celsius",
+                "valueType": "str",
+                "color": "#4a7930"
+            }
+        ],
+        "topic": "",
+        "x": 180,
+        "y": 280,
+        "wires": [
+            [
+                "f7043854268bc636"
+            ]
+        ]
+    },
+    {
+        "id": "717d9a74e6e00f57",
+        "type": "mqtt out",
+        "z": "61070b65cc403ebd",
+        "name": "TempUnit A Pub",
+        "topic": "TempUnitA",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e715b89209433669",
+        "x": 600,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "9557de2e61d7382e",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "TempUnit A Sub",
+        "topic": "TempUnitA",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 440,
+        "y": 1800,
+        "wires": [
+            [
+                "3c13273c48f46699",
+                "b05fe4bdb8bfc131",
+                "313deb67ce27ddc6"
+            ]
+        ]
+    },
+    {
+        "id": "3c13273c48f46699",
+        "type": "ui_text",
+        "z": "61070b65cc403ebd",
+        "group": "860e7b83ad31b0ad",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "Temperature Unit",
+        "label": "Unit:",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "className": "",
+        "x": 690,
+        "y": 1800,
+        "wires": []
+    },
+    {
+        "id": "2e808a31f13770e3",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "TempUnit A Sub",
+        "topic": "TempUnitA",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 260,
+        "y": 2760,
+        "wires": [
+            [
+                "c7b3cc123831c183"
+            ]
+        ]
+    },
+    {
+        "id": "8ae409cc51f88bcf",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "function 16",
+        "func": "var msg = {};\nmsg.collection = \"nodered\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 3000,
+        "wires": [
+            [
+                "f9c166451a2383bb"
+            ]
+        ]
+    },
+    {
+        "id": "3d329d2960abd23b",
+        "type": "ui_button",
+        "z": "61070b65cc403ebd",
+        "name": "Button to Get Temp with Fahrenheit Unit",
+        "group": "252c939a6e9aaf1c",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Get temperatures in Fahrenheit only",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "#A59715",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 240,
+        "y": 3000,
+        "wires": [
+            [
+                "8ae409cc51f88bcf"
+            ]
+        ]
+    },
+    {
+        "id": "f9c166451a2383bb",
+        "type": "mongodb in",
+        "z": "61070b65cc403ebd",
+        "mongodb": "96bcc585530da614",
+        "name": "MongoDB",
+        "collection": "nodered",
+        "operation": "find",
+        "x": 670,
+        "y": 3000,
+        "wires": [
+            [
+                "669006d40f205026"
+            ]
+        ]
+    },
+    {
+        "id": "669006d40f205026",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "function 17",
+        "func": "const tempArray = [];\nconst seriesArray = new Array();\nlet seriesArrLength = 0;\nlet length = msg.payload.length;\nlet seriesName;\nfor (let i = 0; i < length; i++) {\n    seriesName = msg.payload[i].payload.room;\n    if (seriesArray.includes(seriesName) == false && msg.payload[i].payload.tempUnit === \"Fahrenheit\"){\n        seriesArray[seriesArrLength] = msg.payload[i].payload.room;\n        seriesArrLength++;\n    }\n}\nlet countTempArray = 0;\nlet countTemporary; \nfor (let i = 0; i < seriesArrLength; i++){\n    let seriesName = seriesArray[i];\n    const temporaryArr = [];\n    countTemporary = 0;\n    for (let j = 0; j < length; j++) {\n        if (msg.payload[j].payload.room === seriesName && msg.payload[j].payload.tempUnit === \"Fahrenheit\" ){\n            temporaryArr[countTemporary] = { \"x\": (new Date(msg.payload[j].payload.time)).valueOf(), \"y\": msg.payload[j].payload.temperature}; \n            countTemporary++;\n        }\n    }\n    tempArray[countTempArray] = temporaryArr;\n    countTempArray++;\n}\nif (seriesArray.length === 0) {\n    msg.payload = [];\n}\nelse {\n    msg.payload = [\n        {\n            \"series\": seriesArray,\n            \"data\": tempArray,\n            \"labels\": [\"\"]\n        }\n    ];\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 830,
+        "y": 3000,
+        "wires": [
+            [
+                "cf2cf3c53be1023f"
+            ]
+        ]
+    },
+    {
+        "id": "cb11c928f777813a",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "function 18",
+        "func": "var msg = {};\nmsg.collection = \"nodered\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 3060,
+        "wires": [
+            [
+                "18dbeb3f39a8f444"
+            ]
+        ]
+    },
+    {
+        "id": "80fdbc8c181e29d8",
+        "type": "ui_button",
+        "z": "61070b65cc403ebd",
+        "name": "Button to Get Temp with Celsius Unit",
+        "group": "252c939a6e9aaf1c",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Get temperatures in Celsius only",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "#4A7930",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 230,
+        "y": 3060,
+        "wires": [
+            [
+                "cb11c928f777813a"
+            ]
+        ]
+    },
+    {
+        "id": "18dbeb3f39a8f444",
+        "type": "mongodb in",
+        "z": "61070b65cc403ebd",
+        "mongodb": "96bcc585530da614",
+        "name": "MongoDB",
+        "collection": "nodered",
+        "operation": "find",
+        "x": 670,
+        "y": 3060,
+        "wires": [
+            [
+                "0891d350cf2bac5e"
+            ]
+        ]
+    },
+    {
+        "id": "0891d350cf2bac5e",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "function 19",
+        "func": "const tempArray = [];\nconst seriesArray = new Array();\nlet seriesArrLength = 0;\nlet length = msg.payload.length;\nlet seriesName;\nfor (let i = 0; i < length; i++) {\n    seriesName = msg.payload[i].payload.room;\n    if (seriesArray.includes(seriesName) == false && msg.payload[i].payload.tempUnit === \"Celsius\"){\n        seriesArray[seriesArrLength] = msg.payload[i].payload.room;\n        seriesArrLength++;\n    }\n}\nlet countTempArray = 0;\nlet countTemporary; \nfor (let i = 0; i < seriesArrLength; i++){\n    let seriesName = seriesArray[i];\n    const temporaryArr = [];\n    countTemporary = 0;\n    for (let j = 0; j < length; j++) {\n        if (msg.payload[j].payload.room === seriesName && msg.payload[j].payload.tempUnit === \"Celsius\" ){\n            temporaryArr[countTemporary] = { \"x\": (new Date(msg.payload[j].payload.time)).valueOf(), \"y\": msg.payload[j].payload.temperature}; \n            countTemporary++;\n        }\n    }\n    tempArray[countTempArray] = temporaryArr;\n    countTempArray++;\n}\nif (seriesArray.length === 0){\n    msg.payload = [];\n}\nelse {\n    msg.payload = [\n        {\n            \"series\": seriesArray,\n            \"data\": tempArray,\n            \"labels\": [\"\"]\n        }\n    ];\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 850,
+        "y": 3060,
+        "wires": [
+            [
+                "cf2cf3c53be1023f"
+            ]
+        ]
+    },
+    {
+        "id": "31a8a848d9d7feb4",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "TempUnit A Sub",
+        "topic": "TempUnitA",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 3440,
+        "wires": [
+            [
+                "28e12ee9b9de9786",
+                "bee57bee973baabe"
+            ]
+        ]
+    },
+    {
+        "id": "50a86dbb4b8b20fb",
+        "type": "ui_text",
+        "z": "61070b65cc403ebd",
+        "group": "52622085a38c253a",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "Temperature Unit",
+        "label": "Unit:",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "className": "",
+        "x": 690,
+        "y": 2200,
+        "wires": []
+    },
+    {
+        "id": "200c8a693c27cd64",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "TempUnit B Sub",
+        "topic": "TempUnitB",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 440,
+        "y": 2200,
+        "wires": [
+            [
+                "50a86dbb4b8b20fb",
+                "374f3d6d46f2e2cf",
+                "c513ae05a8ea838b"
+            ]
+        ]
+    },
+    {
+        "id": "c5d0c205fd0f46da",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "TempUnit A Sub",
+        "topic": "TempUnitA",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 360,
+        "y": 1080,
+        "wires": [
+            [
+                "e86287e6ce2d8f6d"
+            ]
+        ]
+    },
+    {
+        "id": "e86287e6ce2d8f6d",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "function 20",
+        "func": "// Clear whatever is in Calibration if the temperature unit changed\nif (msg.topic === \"TempUnitA\"){\n    msg.payload = \"reset\";\n    return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 550,
+        "y": 1080,
+        "wires": [
+            [
+                "84ca0e3022fca898"
+            ]
+        ]
+    },
+    {
+        "id": "11f058a1e58669f4",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "TempUnit A Sub",
+        "topic": "TempUnitA",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 440,
+        "y": 2020,
+        "wires": [
+            [
+                "9233650bd0b66d2d"
+            ]
+        ]
+    },
+    {
+        "id": "9233650bd0b66d2d",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "function 21",
+        "func": "// Clear whatever is in the Graph if the temperature unit changed\nif (msg.topic === \"TempUnitA\") {\n    msg.payload = [];\n    return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 610,
+        "y": 2020,
+        "wires": [
+            [
+                "e729703a4730cd03"
+            ]
+        ]
+    },
+    {
+        "id": "43b93e4a7a4bdc55",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "function 22",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 380,
+        "wires": [
+            [
+                "ea90dfd877cc6390"
+            ]
+        ]
+    },
+    {
+        "id": "24f55e5824084230",
+        "type": "ui_multistate_switch",
+        "z": "61070b65cc403ebd",
+        "name": "Temperature Switch",
+        "group": "08a68cfa00e5900d",
+        "order": 2,
+        "width": "0",
+        "height": "0",
+        "label": "ESP32 B:",
+        "stateField": "payload",
+        "enableField": "enable",
+        "passthroughField": "passthrough",
+        "inputMsgField": "inputmsg",
+        "rounded": true,
+        "useThemeColors": false,
+        "hideSelectedLabel": false,
+        "multilineLabel": false,
+        "passThrough": "never",
+        "inputMsg": "all",
+        "userInput": "enabled_show",
+        "options": [
+            {
+                "label": "Fahrenheit",
+                "value": "Fahrenheit",
+                "valueType": "str",
+                "color": "#a59715"
+            },
+            {
+                "label": "Celsius",
+                "value": "Celsius",
+                "valueType": "str",
+                "color": "#4a7930"
+            }
+        ],
+        "topic": "",
+        "x": 180,
+        "y": 380,
+        "wires": [
+            [
+                "43b93e4a7a4bdc55"
+            ]
+        ]
+    },
+    {
+        "id": "ea90dfd877cc6390",
+        "type": "mqtt out",
+        "z": "61070b65cc403ebd",
+        "name": "TempUnit B Pub",
+        "topic": "TempUnitB",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e715b89209433669",
+        "x": 600,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "2185236c8c7b9e36",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "TempUnit B Sub",
+        "topic": "TempUnitB",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 420,
+        "y": 2420,
+        "wires": [
+            [
+                "f75327aa2c98972b"
+            ]
+        ]
+    },
+    {
+        "id": "f75327aa2c98972b",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "function 23",
+        "func": "// Clear whatever is in the Graph if the temperature unit changed\nif (msg.topic === \"TempUnitB\") {\n    msg.payload = [];\n    return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 2420,
+        "wires": [
+            [
+                "468ff5eb05d672d6"
+            ]
+        ]
+    },
+    {
+        "id": "27d15e3101587cac",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "TempUnit B Sub",
+        "topic": "TempUnitB",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 260,
+        "y": 2800,
+        "wires": [
+            [
+                "c7b3cc123831c183"
+            ]
+        ]
+    },
+    {
+        "id": "a209f78e56693fe9",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "TempUnit B Sub",
+        "topic": "TempUnitB",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 3480,
+        "wires": [
+            [
+                "28e12ee9b9de9786"
+            ]
+        ]
+    },
+    {
+        "id": "5408e2a08f2deb94",
+        "type": "mqtt in",
+        "z": "61070b65cc403ebd",
+        "name": "TempUnit B Sub",
+        "topic": "TempUnitB",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e715b89209433669",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 360,
+        "y": 1200,
+        "wires": [
+            [
+                "f942b105b1b716fc"
+            ]
+        ]
+    },
+    {
+        "id": "f942b105b1b716fc",
+        "type": "function",
+        "z": "61070b65cc403ebd",
+        "name": "function 24",
+        "func": "// Clear whatever is in Calibration if the temperature unit changed\nif (msg.topic === \"TempUnitB\"){\n    msg.payload = \"reset\";\n    return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 550,
+        "y": 1200,
+        "wires": [
+            [
+                "d692a92623ab440a"
+            ]
+        ]
+    },
+    {
+        "id": "29c295d69e176bc1",
+        "type": "debug",
+        "z": "61070b65cc403ebd",
+        "name": "debug 24",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 460,
+        "y": 3420,
+        "wires": []
+    },
+    {
+        "id": "bee57bee973baabe",
+        "type": "debug",
+        "z": "61070b65cc403ebd",
+        "name": "debug 25",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 360,
+        "y": 3480,
+        "wires": []
+    },
+    {
+        "id": "e715b89209433669",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "44.212.35.193",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "8bfd89167c58df1f",
+        "type": "ui_group",
+        "name": "Commission",
+        "tab": "3193c19cf73a7634",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "47eb34da7b6b58c3",
+        "type": "ui_group",
+        "name": "Temperature",
+        "tab": "3702dbd3b37dc9b9",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "6c61feb58f2037e1",
+        "type": "ui_group",
+        "name": "Current Voltage",
+        "tab": "3702dbd3b37dc9b9",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "eee1df93fb11605e",
+        "type": "ui_group",
+        "name": "Room Assigned",
+        "tab": "3702dbd3b37dc9b9",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "a87e32ce63f84c89",
+        "type": "ui_group",
+        "name": "Reset Calibration",
+        "tab": "3702dbd3b37dc9b9",
+        "order": 4,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "74b5acc0efef9305",
+        "type": "ui_group",
+        "name": "Table",
+        "tab": "3702dbd3b37dc9b9",
+        "order": 5,
+        "disp": true,
+        "width": "12",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "860e7b83ad31b0ad",
+        "type": "ui_group",
+        "name": "ESP32 A",
+        "tab": "e51790ad36a65c14",
+        "order": 1,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "52622085a38c253a",
+        "type": "ui_group",
+        "name": "ESP32 B",
+        "tab": "e51790ad36a65c14",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "252c939a6e9aaf1c",
+        "type": "ui_group",
+        "name": "Temperature Values Stored in Database",
+        "tab": "d3b3335d35b50d19",
+        "order": 1,
+        "disp": true,
+        "width": "13",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "96bcc585530da614",
+        "type": "mongodb",
+        "hostname": "127.0.0.1",
+        "topology": "direct",
+        "connectOptions": "",
+        "port": "27017",
+        "db": "config",
+        "name": ""
+    },
+    {
+        "id": "830dc150db4bee8b",
+        "type": "ui_group",
+        "name": "Temperature Submission Time Interval",
+        "tab": "71711c5025adfbd5",
+        "order": 1,
+        "disp": true,
+        "width": "8",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "08a68cfa00e5900d",
+        "type": "ui_group",
+        "name": "Choose Termperature Unit",
+        "tab": "71711c5025adfbd5",
+        "order": 2,
+        "disp": true,
+        "width": "10",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "3193c19cf73a7634",
+        "type": "ui_tab",
+        "name": "Commission",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "3702dbd3b37dc9b9",
+        "type": "ui_tab",
+        "name": "Calibration",
+        "icon": "dashboard",
+        "order": 3,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "e51790ad36a65c14",
+        "type": "ui_tab",
+        "name": "Dashboard",
+        "icon": "dashboard",
+        "order": 4,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "d3b3335d35b50d19",
+        "type": "ui_tab",
+        "name": "Database Graph",
+        "icon": "dashboard",
+        "order": 5,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "71711c5025adfbd5",
+        "type": "ui_tab",
+        "name": "Policies & Configurations",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
