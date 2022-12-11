@@ -12,6 +12,7 @@ enum publish_mode {
   PUBLISH_CURRENT_VOLTAGE,
   PUBLISH_CALIBRATION,
   PUBLISH_ROOM_TEMPERATURE,
+  PUBLISH_GET_LATEST_POLICIES,
   PUBLISH_DEFAULT
 };
 
@@ -38,10 +39,13 @@ char calibration_pub_topic[60];
 char room_assigned_pub_topic[60];
 char voltage_pub_topic[60];
 char room_temperature_pub_topic[60];
+const char *submission_time_interval_sub_topic = "TimeIntervalForSubmission";
 const char *room_assigned;
 bool room_was_assigned;
 bool device_calibrated;
+bool verify_latest_policies;
 const char* esp32_macaddress;
+int submission_time_interval;
 
 WiFiClient esp32Client;
 PubSubClient client(esp32Client);
@@ -81,6 +85,7 @@ void reconnect_mqtt() {
     Serial.printf("\n(~)Attempting connection to MQTT Broker in %s", mqtt_broker_host);
     if (client.connect(esp32_macaddress)) {
       Serial.printf("\n(~)Client connected to MQTT Broker in %s!",mqtt_broker_host);
+      client.subscribe(submission_time_interval_sub_topic);
       client.subscribe(commission_sub_topic);
       client.subscribe(calibration_sub_topic);
     } else {
@@ -167,7 +172,11 @@ float interpolation(calibration_struct cal_Values) {
 void send_room_temperature(void *param) {
   int i = 0;
   while(1) {
-    vTaskDelay(5000/portTICK_PERIOD_MS); // give time for last_voltage_average to change again
+    if(submission_time_interval > 0){
+      vTaskDelay(submission_time_interval/ portTICK_PERIOD_MS);
+    } else {
+      vTaskDelay(5000/portTICK_PERIOD_MS); // default time for last_voltage_average to change again
+    }
     if(device_calibrated) {
       struct measurement_struct measurement;
       measurement.temperature = interpolation(calibration_vals);
@@ -211,6 +220,9 @@ void publish(publish_mode mode, const char *publish_topic, const char *pbParamet
     case PUBLISH_ROOM_TEMPERATURE:
       sprintf(message, "%s",pbParameter);
       break;
+    case PUBLISH_GET_LATEST_POLICIES:
+      sprintf(message, "%s",pbParameter);
+      break;
     default:
       sprintf(message, "%s",pbParameter);
       break;
@@ -245,6 +257,10 @@ void callback(char* topic, byte* payload, unsigned int length) {
       calibration((float)atof(buffer),false);
     }
   }
+  else if(strcmp(topic, submission_time_interval_sub_topic) == 0){
+    submission_time_interval = atof(buffer) * 1000;
+    Serial.printf("\nThe latest submission time interval is: %d seconds.", submission_time_interval/1000);
+  }
 }
 
 void setup() {
@@ -268,6 +284,7 @@ void setup() {
   room_was_assigned = false;
   device_calibrated = false;
   last_voltage_average = NOTSET;
+  submission_time_interval = 0;
   // Create task to collect voltage from thermistor
   xTaskCreate(&collect_avg_temp_voltage, "Collect voltage", 2048, NULL, 5, NULL);
   xTaskCreate(&send_room_temperature, "Send temperature", 2048, NULL, 4, NULL);
@@ -277,6 +294,7 @@ void setup() {
   calibration_vals.highest_temp = 0;
   calibration_vals.lowestValuesSaved = false;
   calibration_vals.highestValuesSaved = false;
+  verify_latest_policies = true;
   delay(2000);
 }
 
@@ -287,6 +305,12 @@ void loop() {
   }
   // Maintain connection with the server and process incoming messages
   client.loop();
+  // Check latest policies
+  if(client.connected() && verify_latest_policies){
+    Serial.print("\nVerifying the latest policies.");
+    publish(PUBLISH_GET_LATEST_POLICIES,"InterestInLatestPolicies","true");
+    verify_latest_policies = false;
+  }
   // Publish measurements
   voltage_to_publish = get_avg_temp_voltage();
   if(voltage_to_publish != NOTSET){
