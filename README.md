@@ -11,8 +11,6 @@ This project aims to design and deploy an IoT temperature sensing application th
 - [PubSubClient](https://github.com/knolleary/pubsubclient): allows IoT device to publish/subscribe messaging with a server that supports MQTT
 - iOS shortcut: have Siri read the temperature of a specific room by making a call to Node-RED
 ## Node-RED UI Dashboard:
-- Is Air Conditioner On Website:
-
 ![gitmicro](https://user-images.githubusercontent.com/70550781/207220129-8a1f6a06-4ee2-4502-b073-cdf93543d0c4.gif)
 
 ## Team - Bit Byters:
